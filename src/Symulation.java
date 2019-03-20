@@ -1,24 +1,11 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.Image;
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JSlider;
-import javax.swing.JTextField;
-
-public class Symulation extends JFrame{
+public class Symulation extends JFrame {
 
 	static final int SLIDER_MIN = 0;
 	static final int SLIDER_MAX = 100;
@@ -35,10 +22,8 @@ public class Symulation extends JFrame{
 	private JPanel leftPanel; 
 	private JPanel wadaPanel;  //Zmienic nazwe 
 	private JPanel odlegloscPanel; //Nazwa
-	private JPanel rightPanel; 
 	private JPanel rightPanelSymulation; 
-	private JPanel rightPanelPicture; 
-	private JPanel topPanel; 
+	private JPanel topPanel;
 	private JPanel bottomPanel; 
 	private JLabel changeRefractiveErrorLabel;
 	private JLabel wielkoscWady; // Zmienic nazwe 
@@ -51,9 +36,9 @@ public class Symulation extends JFrame{
 	private ButtonGroup buttonGroup;
 	private JSlider eye1;
 	private JSlider eye2;
-	private JTextField textfieldOdleglosc; //nazwa
-	private JSlider lenghtSlider; 
+	private JSlider lenghtSlider;
 	private JButton buttonStart; 
+	private int odleglosc = 0;
 	
 	public static void main(String[] args) {
 		Symulation okno = new Symulation(); 
@@ -65,19 +50,21 @@ public class Symulation extends JFrame{
 		this.setTitle("Symulacja ogniskowania obrawu w oku w przypadkach ametropii");
 		Menu();
 		LeftPanel();
-		RightPanel();
+		RightSymulationPanel();
 		TopPanel();
 		BottomPanel();
 	}
 
 	private void Menu() {
 		JMenuBar MenuBar = new JMenuBar();
-		this.setJMenuBar(MenuBar); 
+		this.setJMenuBar(MenuBar);
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		
-		JMenu menu = new JMenu("Menu: ");
-		MenuBar.add(menu); 
+		JMenu menu = new JMenu("Menu ");
+		menu.setPreferredSize(new Dimension(100, 40));
+		MenuBar.add(menu);
 		
-		JMenu submenu = new JMenu("Jêzyk "); 
+		JMenu submenu = new JMenu("Jezyk ");
 		menu.add(submenu);
 		
 		JMenuItem menuItemEnglish = new JMenuItem("Angielski");
@@ -106,23 +93,22 @@ public class Symulation extends JFrame{
 		leftPanel = new JPanel(); 
 		leftPanel.setLayout(new GridLayout(10,1));
 		leftPanel.setBackground(new Color(102, 204, 255));
-		
-		changeRefractiveErrorLabel = new JLabel("WYBIERZ RODZAJ AMETROPII "); 
+
+		changeRefractiveErrorLabel = new JLabel("WYBIERZ RODZAJ AMETROPII", SwingConstants.CENTER);
 		changeRefractiveErrorLabel.setForeground(Color.BLUE);
 		buttonGroup = new ButtonGroup();
 		
-		nearSightedness = new JRadioButton("KRÓTKOWZROCZNOŒÆ"); 
+		nearSightedness = new JRadioButton("KROTKOWZROCZNOSC");
 		nearSightedness.setBackground(new Color(102, 204, 255));
-		farSightedness = new JRadioButton("DALEKOWZROCZNOŒÆ");
+		farSightedness = new JRadioButton("DALEKOWZROCZNOSC");
 		farSightedness.setBackground(new Color(102, 204, 255));
 		buttonGroup.add(nearSightedness);
 		buttonGroup.add(farSightedness);
 		
-		wielkoscWady = new JLabel("WPISZ WIELKOŒÆ AMETROPII");
+		wielkoscWady = new JLabel("WPISZ WIELKOSC AMETROPII", SwingConstants.CENTER);
 		wielkoscWady.setForeground(Color.BLUE);
 		
 		wadaPanel = new JPanel(); 
-//		wadaPanel.setBackground(new Color(102, 204, 255));
 		wadaPanel.setLayout(new GridLayout(1,2));
 		
 		eyes = new JLabel("OKO LEWE             OKO PRAWE"); 
@@ -149,7 +135,7 @@ public class Symulation extends JFrame{
 		wadaPanel.add(eye1, BorderLayout.LINE_START);
 		wadaPanel.add(eye2, BorderLayout.LINE_END);
 		
-		lenghtLabel = new JLabel("ODLEG£OŒÆ OD OBIEKTU"); 
+		lenghtLabel = new JLabel("ODLEGLOSC OD OBIEKTU", SwingConstants.CENTER);
 		lenghtLabel.setForeground(Color.BLUE);
 		
 		lenghtSlider = new JSlider(JSlider.HORIZONTAL, SLIDER_MIN, SLIDER_MAX, SLIDER_INIT); 
@@ -158,20 +144,27 @@ public class Symulation extends JFrame{
 		lenghtSlider.setMajorTickSpacing(20); //Co ile ma byc widoczna liczba
 		lenghtSlider.setPaintTicks(true); //podzia³ki 
 		lenghtSlider.setMinorTickSpacing(5); //Co ile kreska
-		lenghtSlider.setPaintLabels(true); //liczby
+		lenghtSlider.setPaintLabels(true); //li 	czby
+		lenghtSlider.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				odleglosc = lenghtSlider.getValue();
+				labelOdleglosc.setText("ODLEGLOSC: " + odleglosc + "m");
+			}
+		});
 		
 		odlegloscPanel = new JPanel();
 		odlegloscPanel.setLayout(new GridLayout(1,2));
 		odlegloscPanel.setBackground(new Color(102, 204, 255));
-		labelOdleglosc = new JLabel("ODLEG£OŒÆ: "); 
+		labelOdleglosc = new JLabel("ODLEGLOSC: " + odleglosc + "m", SwingConstants.CENTER);
 		labelOdleglosc.setForeground(Color.BLUE);
-		textfieldOdleglosc = new JTextField();
+
 		odlegloscPanel.add(labelOdleglosc);
-		odlegloscPanel.add(textfieldOdleglosc);
 		
-		buttonStart = new JButton("ON"); 
+		buttonStart = new JButton("ROZPOCZNIJ");
 		
-		leftPanel.add(changeRefractiveErrorLabel); 
+		leftPanel.add(changeRefractiveErrorLabel);
 		leftPanel.add(nearSightedness);
 		leftPanel.add(farSightedness);
 		leftPanel.add(wielkoscWady);
@@ -185,26 +178,17 @@ public class Symulation extends JFrame{
 		this.add(leftPanel, BorderLayout.LINE_START); 
 	}
 	
-	private void RightPanel() {
-		rightPanel = new JPanel(); 
-		rightPanel.setBackground(Color.BLACK);
-		rightPanel.setSize(300, 400);
-		
-		rightPanelSymulation = new JPanel();
-		rightPanelSymulation.setBackground(Color.RED);
-		rightPanelSymulation.setSize(150, 200);
-		
-		rightPanelPicture = new JPanel();
-		rightPanelPicture.setBackground(Color.CYAN);
-		rightPanel.add(rightPanelSymulation, BorderLayout.LINE_START); 
-		rightPanel.add(rightPanelPicture, BorderLayout.LINE_END);
-		
-		this.add(rightPanel); 
+	private void RightSymulationPanel() {
+		rightPanelSymulation = new JPanel(); 
+		rightPanelSymulation.setBackground(Color.white);
+		rightPanelSymulation.setSize(200, 200);
+		rightPanelSymulation.setLayout(new GridLayout(2,1));
+		this.add(rightPanelSymulation);
 	}
 	
 	private void TopPanel() {
 		topPanel = new JPanel();
-		title = new JLabel("SYMULACJA OGNISKOWANIA OBRAZU W OKU W PRZYPADKACH AMETROPII");
+		title = new JLabel("SYMULACJA OGNISKOWANIA OBRAZU W OKU W PRZYPADKACH AMETROPII", SwingConstants.CENTER);
 		title.setForeground(Color.BLUE);
 		topPanel.add(title); 
 		topPanel.setBackground(new Color(102, 204, 255));
