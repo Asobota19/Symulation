@@ -40,12 +40,19 @@ public class MenuCreator {
             @Override
             public void actionPerformed(ActionEvent e) {
                 symulation.isPL = true;
+
                 symulation.updateText();
             }
         });
         submenu.add(menuItemPolish);
 
         JMenuItem menuItemColor = new JMenuItem("Kolor");
+        menuItemColor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                symulation.setRightPanelComponentColor(JColorChooser.showDialog(symulation, "Choose color", Color.WHITE));
+            }
+        });
         menu.add(menuItemColor);
 
         JMenuItem menuItemSave = new JMenuItem("Zapisz dane");
