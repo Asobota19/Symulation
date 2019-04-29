@@ -1,0 +1,17 @@
+
+public class Ametropia {
+
+	public double setFocus (int wada)
+	{
+		double AVpowofeye = 58.64; 
+		double firstfocos, focos,powofeye;
+		firstfocos = 1/AVpowofeye;
+		powofeye = AVpowofeye - wada;
+		focos = firstfocos - 1/powofeye;
+	
+		return focos;
+		
+	}
+	
+	
+}
