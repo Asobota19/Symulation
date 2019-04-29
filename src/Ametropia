@@ -9,7 +9,7 @@ public class Ametropia {
 		powofeye = AVpowofeye - wada; // nowa dioptria w odniesieniu do zdrowego oka
 		focos = firstfocos - 1/powofeye;
 	
-		return focos;// zwraca nowa ogniskowa oka (z wadą)
+		return focos;// zwraca nowa ogniskowa oka (z wada)
 		
 	}
 	
