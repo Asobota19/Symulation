@@ -57,4 +57,32 @@ public class Translator {
             SwingUtilities.invokeLater(() -> symulation.getButtonRun().setText(BUTTON_RUN_ANG));
         }
     }
+
+    public static String getVisualImparimentTranslation(boolean isPl) {
+        if(isPl) {
+            return "Wada wzroku: ";
+        }
+        return "Visual impariment: ";
+    }
+
+    public static String getAmethropyTypeTranslation(boolean isPl) {
+        if(isPl) {
+            return "Rodzaj ametropii: ";
+        }
+        return "Amethropy type: ";
+    }
+
+    public static String getLenghtTranslation(boolean isPl) {
+        if(isPl) {
+            return "Odległość: ";
+        }
+        return "Length: ";
+    }
+
+    public static String getSaveDateTranslation(boolean isPl) {
+        if(isPl) {
+            return "Data zapisu: ";
+        }
+        return "Save date: ";
+    }
 }

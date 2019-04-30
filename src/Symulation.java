@@ -1,9 +1,12 @@
 import component.RightPanelComponent;
+import save.AmethropyType;
+import save.SaveDataObject;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.util.Date;
 
 public class Symulation extends JFrame {
     // static variables
@@ -141,7 +144,7 @@ public class Symulation extends JFrame {
         eye.setBackground(new Color(102, 204, 255));
         eye.setPreferredSize(new Dimension(100, 50)); // wielkosc suwaka
         eye.setMajorTickSpacing(1); //Co ile ma byc widoczna liczba
-        eye.setPaintTicks(true); //podzia³ki
+        eye.setPaintTicks(true); //podziaï¿½ki
         eye.setMinorTickSpacing(1); //Co ile kreska
         eye.setPaintLabels(true); //liczby
 
@@ -154,7 +157,7 @@ public class Symulation extends JFrame {
         lenghtSlider.setBackground(new Color(102, 204, 255));
         lenghtSlider.setPreferredSize(new Dimension(200, 50)); // wielkosc suwaka
         lenghtSlider.setMajorTickSpacing(20); //Co ile ma byc widoczna liczba
-        lenghtSlider.setPaintTicks(true); //podzia³ki
+        lenghtSlider.setPaintTicks(true); //podziaï¿½ki
         lenghtSlider.setMinorTickSpacing(5); //Co ile kreska
         lenghtSlider.setPaintLabels(true); //li 	czby
         lenghtSlider.addChangeListener(new ChangeListener() {
@@ -213,5 +216,19 @@ public class Symulation extends JFrame {
         bottomPanel.setBackground(new Color(102, 204, 255));
 
         this.add(bottomPanel, BorderLayout.PAGE_END);
+    }
+
+    public SaveDataObject getSaveData() {
+        SaveDataObject dataObject = new SaveDataObject();
+        AmethropyType amethropyType = nearSightedness.isSelected() ? AmethropyType.MYOPIA : AmethropyType.FORESIGHT;
+        dataObject.setAmethropyType(amethropyType);
+        dataObject.setDate(new Date());
+        dataObject.setLength(odleglosc);
+        dataObject.setVisualImpairment(eye.getValue());
+        return  dataObject;
+    }
+
+    public void saveRightPanelImage() {
+        rightPanelComponent.saveImageSymulation();
     }
 }

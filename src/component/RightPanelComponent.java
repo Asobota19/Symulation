@@ -3,6 +3,11 @@ package component;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class RightPanelComponent extends JPanel {
 
@@ -50,6 +55,18 @@ public class RightPanelComponent extends JPanel {
         this.isBad = isBad;
         this.upperSymulationX = 550 + width;
         panel.repaint();
+    }
+
+    public void saveImageSymulation() {
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
+        BufferedImage image = new BufferedImage(panel.getWidth(), panel.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics g = image.getGraphics();
+        panel.paint(g);
+        try {
+            ImageIO.write(image, "png", new File("results/" + currentDate + "-image.png"));
+        } catch (IOException ex) {
+            System.out.println("write image failed: " + ex.getMessage());
+        }
     }
 
     private void drawSymulation(Graphics g) {
