@@ -1,15 +1,20 @@
-
 public class Ametropia {
 
-	public double setFocus (int wada)
+	public double setFocus (int wada, boolean rodzaj)
 	{
-		double AVpowofeye = 58.64; //średnia wartość dobrego widzenia dla zdrowego luznego oka
+		
+		double AVpowofeye = 58.64; 
 		double firstfocos, focos,powofeye;
-		firstfocos = 1/AVpowofeye; // ogniskowa dla zdrowego oka
-		powofeye = AVpowofeye - wada; // nowa dioptria w odniesieniu do zdrowego oka
-		focos = firstfocos - 1/powofeye;
-	
-		return focos;// zwraca nowa ogniskowa oka (z wada)
+		firstfocos = 1/AVpowofeye;
+		if(rodzaj == false) {  // nadwzrocznosc
+		powofeye = AVpowofeye + wada;
+		focos = firstfocos - 1/powofeye; //od tego miejsca widzi do nieskonczonosci
+		}
+		else {	//krotkowidz
+			powofeye = AVpowofeye - wada;
+			focos = firstfocos - 1/powofeye; // od tego miejsca nie widzi do nieskończoności
+		}
+		return focos;
 		
 	}
 	
