@@ -14,7 +14,7 @@ public class Ametropia {
 			powofeye = AVpowofeye - wada;
 			focos = firstfocos - 1/powofeye; // od tego miejsca nie widzi do nieskończoności
 		}
-		return focos;
+		return focos*100;
 		
 	}
 	
