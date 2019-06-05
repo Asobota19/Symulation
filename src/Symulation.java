@@ -1,4 +1,5 @@
 import component.RightPanelComponent;
+import listener.ExitListener;
 import save.AmethropyType;
 import save.SaveDataObject;
 
@@ -6,9 +7,12 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.*;
 import java.util.Date;
 
-public class Symulation extends JFrame {
+import static java.awt.event.KeyEvent.VK_ESCAPE;
+
+public class Symulation extends JFrame implements KeyListener, ActionListener {
     // static variables
     private static final int SLIDER_MIN = 0;
     private static final int SLIDER_MAX = 100;
@@ -100,10 +104,13 @@ public class Symulation extends JFrame {
     }
 
     public Symulation() {
+        ExitListener listener = new ExitListener();
         this.setSize(1200, 800);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setFocusable(true);
+        this.addKeyListener(listener);
         menuCreator = new MenuCreator(this);
-        translator = new Translator(this);
+        translator = new Translator(this, menuCreator);
 
         Menu();
         LeftPanel();
@@ -228,7 +235,33 @@ public class Symulation extends JFrame {
         return  dataObject;
     }
 
-    public void saveRightPanelImage() {
-        rightPanelComponent.saveImageSymulation();
+    public void saveRightPanelImage(JFileChooser chooser) {
+        rightPanelComponent.saveImageSymulation(chooser);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        System.out.println(e.getKeyChar());
+        if(e.getExtendedKeyCode() == VK_ESCAPE) {
+            System.exit(0);
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println(e.getKeyChar());
+        if(e.getExtendedKeyCode() == VK_ESCAPE) {
+            System.exit(0);
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 }

@@ -1,6 +1,7 @@
 import save.SaveService;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +9,10 @@ import java.awt.event.ActionListener;
 public class MenuCreator {
     private Symulation symulation;
     private JMenu menu;
+    private JMenu submenu;
+    private JMenuItem menuExit;
+    private JMenuItem menuItemColor;
+    private JMenuItem menuItemSave;
 
     MenuCreator(Symulation symulation) {
         this.symulation = symulation;
@@ -21,10 +26,10 @@ public class MenuCreator {
         menu.setPreferredSize(new Dimension(100, 40));
         menuBar.add(menu);
 
-        JMenu submenu = new JMenu("Jezyk ");
+        submenu = new JMenu("Jezyk ");
         menu.add(submenu);
 
-        submenu.add(createLanguageMenuItem(false, "Angielski"));
+        submenu.add(createLanguageMenuItem(false, "English"));
         submenu.add(createLanguageMenuItem(true, "Polski"));
 
         menu.add(createColorChangeMenuItem());
@@ -37,7 +42,7 @@ public class MenuCreator {
     }
 
     private JMenuItem createExitMenuItem() {
-        JMenuItem menuExit = new JMenuItem("Wyjdz");
+        menuExit = new JMenuItem("Wyjdz");
         menu.add(menuExit);
         menuExit.addActionListener(new ActionListener() {
 
@@ -57,13 +62,14 @@ public class MenuCreator {
                 symulation.isPL = isPlLanguage;
 
                 symulation.updateText();
+                updateMenuText(isPlLanguage);
             }
         });
         return languageMenuItem;
     }
 
     private JMenuItem createColorChangeMenuItem() {
-        JMenuItem menuItemColor = new JMenuItem("Kolor");
+        menuItemColor = new JMenuItem("Kolor");
         menuItemColor.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -74,14 +80,29 @@ public class MenuCreator {
     }
 
     private JMenuItem createSaveMenuItem() {
-        JMenuItem menuItemSave = new JMenuItem("Zapisz dane");
+        menuItemSave = new JMenuItem("Zapisz dane");
         menuItemSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SaveService.createFile(symulation.getSaveData(), symulation.isPL);
-                symulation.saveRightPanelImage();
+                JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                symulation.saveRightPanelImage(chooser);
+                SaveService.createFile(symulation.getSaveData(), symulation.isPL, chooser);
             }
         });
         return menuItemSave;
+    }
+
+    private void updateMenuText(boolean isPl) {
+        if(isPl) {
+            submenu.setText("Jezyk");
+            menuExit.setText("Wyjdz");
+            menuItemColor.setText("Kolor");
+            menuItemSave.setText("Zapisz dane");
+        } else {
+            submenu.setText("Language");
+            menuExit.setText("Exit");
+            menuItemColor.setText("Color");
+            menuItemSave.setText("Save data");
+        }
     }
 }

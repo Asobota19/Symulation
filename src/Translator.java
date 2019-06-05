@@ -41,7 +41,7 @@ public class Translator {
     public String MENU_WYJSCIE_PL = "Wyjdz";
     public String MENU_WYJSCIE_ENG = "Quit";
 
-    public Translator(Symulation symulation) {
+    public Translator(Symulation symulation, MenuCreator menuCreator) {
         this.symulation = symulation;
     }
 
@@ -57,7 +57,6 @@ public class Translator {
             labelLenghtText = LABEL_LENGHT_PL;
             SwingUtilities.invokeLater(() -> symulation.getLenghtLabel().setText(LABEL_LENGHT_PL));
             SwingUtilities.invokeLater(() -> symulation.getButtonRun().setText(BUTTON_RUN_PL));
-          //  SwingUtilities.invokeLater(() -> menucreator.getButtonRun().setText(BUTTON_RUN_PL));
         } else {
             SwingUtilities.invokeLater(() -> symulation.setTitle(FRAME_TITLE_ANG));
             SwingUtilities.invokeLater(() -> symulation.getLabelTitle().setText(FRAME_TITLE_ANG));

@@ -2,6 +2,8 @@ package component;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -57,8 +59,8 @@ public class RightPanelComponent extends JPanel {
         panel.repaint();
     }
 
-    public void saveImageSymulation() {
-        String currentDate = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
+    public void saveImageSymulation(JFileChooser chooser) {
+        /*String currentDate = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
         BufferedImage image = new BufferedImage(panel.getWidth(), panel.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics g = image.getGraphics();
         panel.paint(g);
@@ -66,6 +68,23 @@ public class RightPanelComponent extends JPanel {
             ImageIO.write(image, "png", new File("results/" + currentDate + "-image.png"));
         } catch (IOException ex) {
             System.out.println("write image failed: " + ex.getMessage());
+        }*/
+
+        BufferedImage image = new BufferedImage(panel.getWidth(), panel.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics g = image.getGraphics();
+        panel.paint(g);
+
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "PNG images", "png");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showSaveDialog(null);
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+            File outputFile = new File(chooser.getSelectedFile().getAbsolutePath() + ".png");
+            try {
+                ImageIO.write(image, "png", outputFile);
+            } catch (IOException exception) {
+                System.out.println(exception.getMessage());
+            }
         }
     }
 
