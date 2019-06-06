@@ -53,9 +53,9 @@ public class RightPanelComponent extends JPanel {
     }
 
     public void updateSymulation(int width, boolean isBad) {
-        this.width = width;
+        this.width = width/4;
         this.isBad = isBad;
-        this.upperSymulationX = 550 + width;
+        this.upperSymulationX = 714 + width/4;
         panel.repaint();
     }
 
