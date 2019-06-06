@@ -13,13 +13,13 @@ import java.util.Date;
 import static java.awt.event.KeyEvent.VK_ESCAPE;
 
 public class Symulation extends JFrame implements KeyListener, ActionListener {
-    // static variables
-    private static final int SLIDER_MIN = 0;
-    private static final int SLIDER_MAX = 100;
-    private static final int SLIDER_INIT = 0;
+     // static variables
+    private static final int SLIDER_MIN = 20;
+    private static final int SLIDER_MAX = 400;
+    private static final int SLIDER_INIT = 20;
 
     private static final int SLIDER_MIN_EYE = 0;
-    private static final int SLIDER_MAX_EYE = 6;
+    private static final int SLIDER_MAX_EYE = 12;
     private static final int SLIDER_INIT_EYE = 0;
 
     // variables
@@ -43,7 +43,7 @@ public class Symulation extends JFrame implements KeyListener, ActionListener {
     private JLabel labelOdleglosc;
     private JLabel labelTitle;
     private JRadioButton nearSightedness;
-    private JRadioButton farSightedness;
+    JRadioButton farSightedness;
     private ButtonGroup buttonGroup;
     private JSlider eye;
     private JSlider lenghtSlider;
@@ -52,7 +52,9 @@ public class Symulation extends JFrame implements KeyListener, ActionListener {
     MenuCreator menuCreator;
     Translator translator;
     private JButton buttonRun;
+    Ametropia ametropia;
     // main method
+    int f;
 
     public static void main(String[] args) {
         Symulation okno = new Symulation();
@@ -139,22 +141,24 @@ public class Symulation extends JFrame implements KeyListener, ActionListener {
         farSightedness.setBackground(new Color(102, 204, 255));
         buttonGroup.add(nearSightedness);
         buttonGroup.add(farSightedness);
+        farSightedness.setSelected(true);
 
         visualImpairment = new JLabel(translator.LABEL_WIELKOSC_WADY_PL, SwingConstants.CENTER);
         visualImpairment.setForeground(Color.BLUE);
 
         visualImparimentPanel = new JPanel();
         visualImparimentPanel.setLayout(new GridLayout(1, 2));
-
+        ametropia = new Ametropia(this);
         eye = new JSlider();
         eye = new JSlider(JSlider.HORIZONTAL, SLIDER_MIN_EYE, SLIDER_MAX_EYE, SLIDER_INIT_EYE);
         eye.setBackground(new Color(102, 204, 255));
         eye.setPreferredSize(new Dimension(100, 50)); // wielkosc suwaka
-        eye.setMajorTickSpacing(1); //Co ile ma byc widoczna liczba
-        eye.setPaintTicks(true); //podzia�ki
+        eye.setMajorTickSpacing(2); //Co ile ma byc widoczna liczba
+        eye.setPaintTicks(true); //podziaďż˝ki
         eye.setMinorTickSpacing(1); //Co ile kreska
         eye.setPaintLabels(true); //liczby
 
+        
         visualImparimentPanel.add(eye, BorderLayout.LINE_START);
 
         lenghtLabel = new JLabel(translator.LABEL_LENGHT_PL, SwingConstants.CENTER);
@@ -163,22 +167,36 @@ public class Symulation extends JFrame implements KeyListener, ActionListener {
         lenghtSlider = new JSlider(JSlider.HORIZONTAL, SLIDER_MIN, SLIDER_MAX, SLIDER_INIT);
         lenghtSlider.setBackground(new Color(102, 204, 255));
         lenghtSlider.setPreferredSize(new Dimension(200, 50)); // wielkosc suwaka
-        lenghtSlider.setMajorTickSpacing(20); //Co ile ma byc widoczna liczba
-        lenghtSlider.setPaintTicks(true); //podzia�ki
-        lenghtSlider.setMinorTickSpacing(5); //Co ile kreska
+        lenghtSlider.setMajorTickSpacing(60); //Co ile ma byc widoczna liczba
+        lenghtSlider.setPaintTicks(true); //podziaďż˝ki
+        lenghtSlider.setMinorTickSpacing(10); //Co ile kreska
         lenghtSlider.setPaintLabels(true); //li 	czby
         lenghtSlider.addChangeListener(new ChangeListener() {
 
+        
             @Override
             public void stateChanged(ChangeEvent arg0) {
                 odleglosc = lenghtSlider.getValue();
-                labelOdleglosc.setText(translator.LABEL_LENGHT_PL + " " +  odleglosc + "m");
-                if(odleglosc > 45) {
-                    rightPanelComponent.updateSymulation(odleglosc, true);
-                } else {
+                f = ametropia.setFocus(eye.getValue());
+                labelOdleglosc.setText(translator.LABEL_LENGHT_PL + " " +  odleglosc + " cm");
+              if(farSightedness.isSelected()) {
+                if(odleglosc > f) {
                     rightPanelComponent.updateSymulation(odleglosc, false);
+                } else {
+                    rightPanelComponent.updateSymulation(odleglosc, true);
                 }
             }
+            
+            else {
+                    if(odleglosc > f) {
+                        rightPanelComponent.updateSymulation(odleglosc, true);
+                    } else {
+                        rightPanelComponent.updateSymulation(odleglosc, false);
+                    }
+                }
+            	
+            }
+           
         });
 
         lenghtPanel = new JPanel();
