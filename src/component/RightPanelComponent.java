@@ -17,8 +17,18 @@ public class RightPanelComponent extends JPanel {
     private Image eyeImageUpper;
     private Image imagePoint;
     private Image imagePointBad;
+    boolean rozmazane;
+    boolean rodzaj;
+    
+    public boolean isRozmazane() {
+		return rozmazane;
+	}
 
-    private JPanel panel = new JPanel() {
+	public void setRozmazane(boolean rozmazane) {
+		this.rozmazane = rozmazane;
+	}
+
+	private JPanel panel = new JPanel() {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -31,6 +41,7 @@ public class RightPanelComponent extends JPanel {
     private boolean isBad;
     private int upperSymulationX;
 
+  
     public JPanel getPanel() {
         return panel;
     }
@@ -40,7 +51,7 @@ public class RightPanelComponent extends JPanel {
         panel.setSize(200, 200);
         panel.setLayout(new GridLayout(2, 1));
         upperSymulationX = 600;
-        this.updateSymulation(0, false);
+        this.updateSymulation(0, false, rozmazane, rodzaj);
 
         try {
             eyeImage = ImageIO.read(getClass().getResourceAsStream("/image/eyeImage.png"));
@@ -51,12 +62,30 @@ public class RightPanelComponent extends JPanel {
             System.out.println("IMAGE NOT FOUND");
         }
     }
-
-    public void updateSymulation(int width, boolean isBad) {
+    
+    public void updateSymulation(int width, boolean isBad, boolean r, boolean rodzaj) {
+    	if(rodzaj == true) {
         this.width = width/4;
         this.isBad = isBad;
+        if(r == false) {
         this.upperSymulationX = 714 + width/4;
-        panel.repaint();
+        panel.repaint();}
+        else {
+            this.upperSymulationX = 714;
+            panel.repaint();
+        }
+    	}
+    	else  {
+    		this.width = width/4;
+        this.isBad = isBad;
+        if(r == false) {
+        this.upperSymulationX = 714 - width/4;
+        panel.repaint();}
+        else {
+            this.upperSymulationX = 714;
+            panel.repaint();
+        }
+    	}
     }
 
     public void saveImageSymulation(JFileChooser chooser) {
