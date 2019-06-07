@@ -53,10 +53,21 @@ public class Symulation extends JFrame implements KeyListener, ActionListener {
     Translator translator;
     private JButton buttonRun;
     Ametropia ametropia;
-    // main method
-    int f;
+    JLabel wynik;
+    
 
-    public static void main(String[] args) {
+	// main method
+    int f=0;
+
+    public int getF() {
+		return f;
+	}
+
+	public void setF(int f) {
+		this.f = f;
+	}
+
+	public static void main(String[] args) {
         Symulation okno = new Symulation();
         okno.setVisible(true);
     }
@@ -177,21 +188,23 @@ public class Symulation extends JFrame implements KeyListener, ActionListener {
             @Override
             public void stateChanged(ChangeEvent arg0) {
                 odleglosc = lenghtSlider.getValue();
+                wynik.setText(+ametropia.setFocus(+ eye.getValue())+"");
                 f = ametropia.setFocus(eye.getValue());
                 labelOdleglosc.setText(translator.LABEL_LENGHT_PL + " " +  odleglosc + " cm");
-              if(farSightedness.isSelected()) {
+               
+              if(farSightedness.isSelected()) {        
                 if(odleglosc > f) {
-                    rightPanelComponent.updateSymulation(odleglosc, false);
+                    rightPanelComponent.updateSymulation(odleglosc, false, true, true);
                 } else {
-                    rightPanelComponent.updateSymulation(odleglosc, true);
+                    rightPanelComponent.updateSymulation(odleglosc, true, false, true);
                 }
             }
             
             else {
                     if(odleglosc > f) {
-                        rightPanelComponent.updateSymulation(odleglosc, true);
+                        rightPanelComponent.updateSymulation(odleglosc, true, false, false);
                     } else {
-                        rightPanelComponent.updateSymulation(odleglosc, false);
+                        rightPanelComponent.updateSymulation(odleglosc, false, true, false);
                     }
                 }
             	
@@ -208,7 +221,11 @@ public class Symulation extends JFrame implements KeyListener, ActionListener {
         lenghtPanel.add(labelOdleglosc);
 
         buttonRun = new JButton(translator.BUTTON_RUN_PL);
-
+        
+        wynik = new JLabel();
+        
+        
+        
         leftPanel.add(changeRefractiveErrorLabel);
         leftPanel.add(nearSightedness);
         leftPanel.add(farSightedness);
@@ -217,7 +234,7 @@ public class Symulation extends JFrame implements KeyListener, ActionListener {
         leftPanel.add(lenghtLabel);
         leftPanel.add(lenghtSlider);
         leftPanel.add(lenghtPanel);
-        leftPanel.add(buttonRun);
+        leftPanel.add(wynik);
 
         this.add(leftPanel, BorderLayout.LINE_START);
     }
@@ -253,6 +270,11 @@ public class Symulation extends JFrame implements KeyListener, ActionListener {
         return  dataObject;
     }
 
+    
+    
+    
+    
+    
     public void saveRightPanelImage(JFileChooser chooser) {
         rightPanelComponent.saveImageSymulation(chooser);
     }
